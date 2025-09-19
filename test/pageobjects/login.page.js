@@ -35,11 +35,6 @@ class LoginPage {
         await this.loginButton.click();
     }
 
-    async getErrorText() {
-        await this.errorMessage.waitForDisplayed()
-        return await this.errorMessage.getText()
-
-    }
 }
 
 module.exports = new LoginPage();

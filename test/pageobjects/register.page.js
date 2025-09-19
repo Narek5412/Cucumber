@@ -3,9 +3,6 @@ const {browser} = require('@wdio/globals')
 const registerPageURL = "https://practicesoftwaretesting.com/auth/register"
 
 class RegisterPage {
-    get errorMessage() {
-        return browser.$('div[data-test="password-error"]');
-    }
 
     get inputFirstName() {
         return browser.$('input[data-test="first-name"]')
@@ -35,12 +32,8 @@ class RegisterPage {
         return browser.$('input[data-test="state"]')
     }
 
-    get selectCountry() {
+    get countryDropdown() {
         return browser.$('select[data-test="country"]')
-    }
-
-    get country() {
-        return browser.$('option[value="AM"]')
     }
 
     get inputPhone() {
@@ -63,7 +56,7 @@ class RegisterPage {
         await browser.url(registerPageURL);
     }
 
-    async register(firstName, lastName, dateOfBirth, street, postalCode, city, state, phone, email, password) {
+    async register(firstName, lastName, dateOfBirth, street, postalCode, city, state, phone, email, password,countryCode) {
         await this.inputFirstName.setValue(firstName);
         await this.inputLastName.setValue(lastName);
         await this.inputDateOfBirth.setValue(dateOfBirth);
@@ -71,19 +64,22 @@ class RegisterPage {
         await this.inputPostalCode.setValue(postalCode);
         await this.inputCity.setValue(city);
         await this.inputState.setValue(state);
-        await this.selectCountry.click(this.country.click());
         await this.inputPhone.setValue(phone);
         await this.inputEmail.setValue(email);
         await this.inputPassword.setValue(password);
+        await this.selectCountry(countryCode);
 
         await this.registerButton.waitForClickable()
         await this.registerButton.click()
     }
-
-    async getErrorText() {
-        await this.errorMessage.waitForDisplayed()
-        return await this.errorMessage.getText()
+    async selectCountry(countryCode) {
+        await this.countryDropdown.waitForClickable(5000);
+        await this.countryDropdown.click();
+        const countryOption = await browser.$(`option[value="${countryCode}"]`);
+        await countryOption.scrollIntoView();
+        await countryOption.click();
     }
+
 
 }
 module.exports = new RegisterPage();

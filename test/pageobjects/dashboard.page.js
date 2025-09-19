@@ -3,10 +3,6 @@ const {browser} = require('@wdio/globals')
 const dashboardPageURL = "https://practicesoftwaretesting.com/";
 
 class DashboardPage {
-    get imgProduct() {
-        return browser.$('div[class="card-body"]')
-    }
-
     get inputSearch() {
         return browser.$('input[data-test="search-query"]')
     }
@@ -23,11 +19,7 @@ class DashboardPage {
         return browser.$('option[value="price,desc"]')
     }
 
-    get productName1() {
-        return browser.$('h5[data-test="product-name"]')
-    }
-
-    get productName() {
+    get combinationPliersText() {
         return browser.$('h1[data-test="product-name"]')
     }
 
@@ -47,26 +39,10 @@ class DashboardPage {
         await browser.url(dashboardPageURL);
     }
 
-    async productDetails() {
-        await this.productName1.scrollIntoView();
-        await this.productName1.waitForClickable()
-        await this.productName1.click()
-    }
-
-    async searching() {
-        await this.inputSearch.setValue("Combination Pliers")
-        await this.buttonSearch.waitForClickable()
+    async searchForProduct(searchTerm) {
+        await this.inputSearch.setValue(searchTerm);
+        await this.buttonSearch.waitForClickable();
         await this.buttonSearch.click();
-    }
-
-    async getNameText() {
-        await this.productName.waitForDisplayed()
-        return await this.productName.getText()
-    }
-
-    async getNameText1() {
-        await this.productName1.waitForDisplayed()
-        return await this.productName1.getText()
     }
 
     async filtersByCategory() {
@@ -74,7 +50,7 @@ class DashboardPage {
         await this.hammerCheckbox.click()
     }
 
-    async getHammerText() {
+    async getFilteredProductName() {
         await this.hammer.waitForDisplayed()
         return await this.hammer.getText()
     }
@@ -82,11 +58,6 @@ class DashboardPage {
     async getPriceSettings() {
         await this.priceSettings.click()
         await this.priceHighToLow.click()
-    }
-
-    async getToolCabinetText() {
-        await this.toolCabinet.waitForDisplayed()
-        return await this.toolCabinet.getText()
     }
 }
 

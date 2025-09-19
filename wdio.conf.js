@@ -51,10 +51,12 @@ exports.config = {
     //
     capabilities: [{
         browserName: 'chrome',
-        acceptInsecureCerts: true // For self-signed certificates
+        acceptInsecureCerts: true ,
+        'goog:chromeOptions': { args: ['--headless', '--disable-gpu'] }
     }, {
         browserName: 'firefox',
-        acceptInsecureCerts: true
+        acceptInsecureCerts: true,
+        'moz:firefoxOptions': { args: [ '-headless' ] }
     }, {
         browserName: 'safari'
     }],
@@ -90,7 +92,7 @@ exports.config = {
     // with `/`, the base url gets prepended, not including the path portion of your baseUrl.
     // If your `url` parameter starts without a scheme or `/` (like `some/path`), the base url
     // gets prepended directly.
-    //////// baseUrl: 'https://practicesoftwaretesting.com/auth/register',
+    baseUrl: 'https://practicesoftwaretesting.com',
     //
     // Default timeout for all waitFor* commands.
     waitforTimeout: 10000,
@@ -190,8 +192,11 @@ exports.config = {
      * @param {Array.<String>} specs        List of spec file paths that are to be run
      * @param {object}         browser      instance of created browser/device session
      */
-    // before: function (capabilities, specs) {
-    // },
+     before: function (capabilities, specs) {
+
+            browser.setWindowSize(1920, 1080);
+    }
+
     /**
      * Runs before a WebdriverIO command gets executed.
      * @param {string} commandName hook command name
