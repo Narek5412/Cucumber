@@ -28,7 +28,7 @@ class DashboardPage {
     }
 
     get hammer() {
-        return browser.$('h5[data-test="product-name"]')
+        return browser.$$('h5[data-test="product-name"]')
     }
 
     get toolCabinet() {
@@ -46,13 +46,25 @@ class DashboardPage {
     }
 
     async filtersByCategory() {
+        await this.hammerCheckbox.waitForDisplayed()
         await this.hammerCheckbox.scrollIntoView()
         await this.hammerCheckbox.click()
     }
+    async getAllFilteredProductNames() {
 
-    async getFilteredProductName() {
-        await this.hammer.waitForDisplayed()
-        return await this.hammer.getText()
+        await browser.waitUntil(
+            async () => (await this.hammer).length > 0,
+            {
+                timeout: 10000,
+                timeoutMsg: 'Expected filtered products to be displayed but none found'
+            }
+        );
+        const productElements = await this.hammer;
+        const productWithNames = [];
+        for (const item of productElements) {
+            productWithNames.push((await item.getText()).trim());
+        }
+        return productWithNames;
     }
 
     async getPriceSettings() {

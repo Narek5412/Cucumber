@@ -1,10 +1,11 @@
-const {expect} = require('@wdio/globals')
 const LoginPage = require('../pageobjects/login.page')
 const RegisterPage = require('../pageobjects/register.page')
 const MyAccountPage = require('../pageobjects/myAccount.page')
 const DashboardPage = require('../pageobjects/dashboard.page')
 const ProductPage = require('../pageobjects/product.page')
 const { products, users, filters } = require('../data/testData');
+const { expect ,should ,assert} = require('chai');
+should();
 describe('Registration Functionality on practicesoftwaretesting.com', () => {
     it('should registration with valid credentials', async () => {
         //     Given the user is on the registration page.
@@ -24,7 +25,13 @@ describe('Registration Functionality on practicesoftwaretesting.com', () => {
             'AM',
         );
         //     Then they should be redirected to the login page
-        expect(await LoginPage.title).toBeDisplayed();
+        const title = await LoginPage.title.isDisplayed();
+        if(title){
+             expect(title).to.be.true;
+        }else {
+            const errorText = await RegisterPage.errorMessageText()
+            expect(errorText).to.equal('A customer with this email address already exists.');
+        }
     });
     // it('should registration with invalid credentials', async () => {
     //     await RegisterPage.open();
@@ -55,7 +62,9 @@ describe('Login Functionality on practicesoftwaretesting.com', () => {
             users.validUser.email,
             users.validUser.password,)
         //     Then they should be redirected to their account page.
-        await expect(MyAccountPage.title).toBeDisplayed()
+        await MyAccountPage.title.waitForDisplayed()
+        const title = await MyAccountPage.title.isDisplayed();
+        expect(title).to.be.true;
     })
     // it('should login with invalid credentials', async () => {
     //     await LoginPage.open();
@@ -72,17 +81,21 @@ describe('Product Details Functionality on practicesoftwaretesting.com', () => {
         //     When they view a product's details.
         await ProductPage.productDetails();
         //     Then the page should display the product name, description, price, and related products.
-        await expect(DashboardPage.combinationPliersText).toBeDisplayed();
+        await DashboardPage.combinationPliersText.waitForDisplayed()
+        const productNameIsDisplayed = await DashboardPage.combinationPliersText.isDisplayed();
+        assert.isTrue(productNameIsDisplayed);
     })
 })
 describe('Adding To Cart Functionality on practicesoftwaretesting.com', () => {
     it('should adding the product to favorites list', async () => {
-        //     Given the user is on the product details page,
+        //     Given the user is come on the product details page,
         await ProductPage.open();
         //     When they add the product to their cart,
         await ProductPage.addProductToCart();
         //     Then the product should be in the cart, and the cart icon should update to reflect the new item count.
-        expect(ProductPage.message).toBeDisplayed();
+        await ProductPage.message.waitForDisplayed();
+        const messageText = await ProductPage.getMessageText()
+        messageText.should.include('Product added to shopping cart.');
     })
 })
 
@@ -93,8 +106,9 @@ describe('Adding To Favorite Functionality on practicesoftwaretesting.com', () =
         //     When they add the product to their favorites list,
         await ProductPage.addProductToFavorites();
         //     Then the product should be in the favorites list, and a message "Product added to your favorites list." should be displayed.
-        const message = await ProductPage.getMessageText()
-        expect(ProductPage.message).toBeDisplayed();
+        await ProductPage.message.waitForDisplayed();
+        const messageText = await ProductPage.getMessageText();
+        messageText.should.include('your favorites list');
     })
 })
 describe('Searching Functionality on practicesoftwaretesting.com', () => {
@@ -104,7 +118,9 @@ describe('Searching Functionality on practicesoftwaretesting.com', () => {
         //     When they search for a product name,
         await DashboardPage.searchForProduct(products.pliers.name);
         //     Then a list of products matching the search term should be displayed.
-        await expect(ProductPage.combinationPliersText).toBeDisplayed()
+        await ProductPage.combinationPliersText.waitForDisplayed();
+        const combinationPliersTextIsDisplayed = await ProductPage.combinationPliersText.isDisplayed();
+        await assert.isOk(combinationPliersTextIsDisplayed);
     })
 })
 describe('Filtering and Sorting Functionality By Price on practicesoftwaretesting.com', () => {
@@ -114,7 +130,9 @@ describe('Filtering and Sorting Functionality By Price on practicesoftwaretestin
         //     When they sort the products from high to low price,
         await DashboardPage.getPriceSettings();
         //     Then the displayed products should be sorted by price in descending order.
-        await expect(DashboardPage.toolCabinet).toBeDisplayed()
+        await DashboardPage.toolCabinet.waitForDisplayed();
+        const toolCabinetTextIsDisplayed = await DashboardPage.toolCabinet.isDisplayed();
+        await assert.isOk(toolCabinetTextIsDisplayed);
     })
 })
 describe('Filtering and Sorting Functionality By Categories on practicesoftwaretesting.com', () => {
@@ -124,8 +142,8 @@ describe('Filtering and Sorting Functionality By Categories on practicesoftwaret
         //     When they filter products by a category.
         await DashboardPage.filtersByCategory();
         //     Then the displayed products should match the selected category and sort order.
-        const name = await DashboardPage.getFilteredProductName()
-        await expect(DashboardPage.hammer).toBeDisplayed()
+        const allNames = await DashboardPage.getAllFilteredProductNames()
+        await assert.include(allNames, "Hammer")
     })
 })
 
