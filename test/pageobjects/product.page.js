@@ -1,6 +1,6 @@
 const {$} = require('@wdio/globals')
 const {browser} = require('@wdio/globals')
-const productPageURL = "https://practicesoftwaretesting.com/product/01K5H0Z4QHFHQM6YYBT4QG3B4M";
+const DashboardPage = require('../pageobjects/dashboard.page')
 class ProductPage {
     get addToFavourites() {
         return browser.$('button[data-test="add-to-favorites"]')
@@ -18,7 +18,8 @@ class ProductPage {
     }
 
     async open() {
-        await browser.url(productPageURL);
+        await DashboardPage.open();
+        await this.productDetails();
     }
     async productDetails() {
         await this.combinationPliersText.scrollIntoView();

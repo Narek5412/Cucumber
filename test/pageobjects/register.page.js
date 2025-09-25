@@ -51,6 +51,9 @@ class RegisterPage {
     get registerButton() {
         return browser.$('button[data-test="register-submit"]')
     }
+    get registerPageErrorMassage () {
+        return browser.$('div[data-test="register-error"]')
+    }
 
     async open() {
         await browser.url(registerPageURL);
@@ -79,7 +82,11 @@ class RegisterPage {
         await countryOption.scrollIntoView();
         await countryOption.click();
     }
-
+async errorMessageText() {
+        await this.registerPageErrorMassage.waitForDisplayed();
+        const errorText = await this.registerPageErrorMassage.getText();
+        return errorText;
+}
 
 }
 module.exports = new RegisterPage();
