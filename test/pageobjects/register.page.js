@@ -1,84 +1,67 @@
 const {$} = require('@wdio/globals');
-const {browser} = require('@wdio/globals')
-const registerPageURL = "https://practicesoftwaretesting.com/auth/register"
-
-class RegisterPage {
-
+const BasePage = require('./base.page');
+class RegisterPage extends BasePage {
     get inputFirstName() {
-        return browser.$('input[data-test="first-name"]')
+        return $('input[data-test="first-name"]')
     }
-
     get inputLastName() {
-        return browser.$('input[data-test="last-name"]')
+        return $('input[data-test="last-name"]')
     }
-
     get inputDateOfBirth() {
-        return browser.$('input[data-test="dob"]')
+        return $('input[data-test="dob"]')
     }
-
     get inputStreet() {
-        return browser.$('input[data-test="street"]')
+        return $('input[data-test="street"]')
     }
-
     get inputPostalCode() {
-        return browser.$('input[data-test="postal_code"]')
+        return $('input[data-test="postal_code"]')
     }
-
     get inputCity() {
-        return browser.$('input[data-test="city"]')
+        return $('input[data-test="city"]')
     }
-
     get inputState() {
-        return browser.$('input[data-test="state"]')
+        return $('input[data-test="state"]')
     }
-
     get countryDropdown() {
-        return browser.$('select[data-test="country"]')
+        return $('select[data-test="country"]')
     }
-
     get inputPhone() {
-        return browser.$('input[data-test="phone"]')
+        return $('input[data-test="phone"]')
     }
-
     get inputEmail() {
-        return browser.$('input[data-test="email"]')
+        return $('input[data-test="email"]')
     }
-
     get inputPassword() {
-        return browser.$('input[data-test="password"]')
+        return $('input[data-test="password"]')
     }
-
     get registerButton() {
-        return browser.$('button[data-test="register-submit"]')
+        return $('button[data-test="register-submit"]')
     }
     get registerPageErrorMassage () {
-        return browser.$('div[data-test="register-error"]')
+        return $('div[data-test="register-error"]')
     }
-
     async open() {
-        await browser.url(registerPageURL);
+        return super.open('auth/register');
     }
-
     async register(firstName, lastName, dateOfBirth, street, postalCode, city, state, phone, email, password,countryCode) {
-        await this.inputFirstName.setValue(firstName);
-        await this.inputLastName.setValue(lastName);
-        await this.inputDateOfBirth.setValue(dateOfBirth);
-        await this.inputStreet.setValue(street);
-        await this.inputPostalCode.setValue(postalCode);
-        await this.inputCity.setValue(city);
-        await this.inputState.setValue(state);
-        await this.inputPhone.setValue(phone);
-        await this.inputEmail.setValue(email);
-        await this.inputPassword.setValue(password);
+        await this.setInputValue(this.inputFirstName,firstName);
+        await this.setInputValue(this.inputLastName,lastName);
+        await this.setInputValue(this.inputDateOfBirth,dateOfBirth);
+        await this.setInputValue(this.inputStreet,street);
+        await this.setInputValue(this.inputPostalCode,postalCode);
+        await this.setInputValue(this.inputCity,city);
+        await this.setInputValue(this.inputState,state);
+        await this.setInputValue(this.inputPhone,phone);
+        await this.setInputValue(this.inputEmail,email);
+        await this.setInputValue(this.inputPassword,password);
         await this.selectCountry(countryCode);
 
-        await this.registerButton.waitForClickable()
-        await this.registerButton.click()
+        await this.clickElement(this.registerButton)
     }
     async selectCountry(countryCode) {
         await this.countryDropdown.waitForClickable(5000);
         await this.countryDropdown.click();
-        const countryOption = await browser.$(`option[value="${countryCode}"]`);
+        const countryOption = await $(`option[value="${countryCode}"]`);
         await countryOption.scrollIntoView();
         await countryOption.click();
     }
