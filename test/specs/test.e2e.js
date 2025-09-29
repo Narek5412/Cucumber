@@ -2,9 +2,10 @@ const LoginPage = require('../pageobjects/login.page')
 const RegisterPage = require('../pageobjects/register.page')
 const MyAccountPage = require('../pageobjects/myAccount.page')
 const DashboardPage = require('../pageobjects/dashboard.page')
+const BasePage = require('../pageobjects/base.page')
 const ProductPage = require('../pageobjects/product.page')
-const { products, users, filters } = require('../data/testData');
-const { expect ,should ,assert} = require('chai');
+const {products, users, filters} = require('../data/testData');
+const {expect, should, assert} = require('chai');
 should();
 describe('Registration Functionality on practicesoftwaretesting.com', () => {
     it('should registration with valid credentials', async () => {
@@ -26,32 +27,13 @@ describe('Registration Functionality on practicesoftwaretesting.com', () => {
         );
         //     Then they should be redirected to the login page
         const title = await LoginPage.title.isDisplayed();
-        if(title){
-             expect(title).to.be.true;
-        }else {
+        if (title) {
+            expect(title).to.be.true;
+        } else {
             const errorText = await RegisterPage.errorMessageText()
             expect(errorText).to.equal('A customer with this email address already exists.');
         }
     });
-    // it('should registration with invalid credentials', async () => {
-    //     await RegisterPage.open();
-    //     await RegisterPage.register(
-    //         'tom',
-    //         'smith',
-    //         '2001-01-01',
-    //         'street',
-    //         '001',
-    //         'city',
-    //         'state',
-    //         '1234567890',
-    //         'qwerty@gmail.com',
-    //         'qscgy-54321',
-    //     );
-    //
-    //     const error =  await RegisterPage.getErrorText()
-    //     await expect(error).toBe("Password can not include invalid characters.")
-    //
-    // })
 })
 describe('Login Functionality on practicesoftwaretesting.com', () => {
     it('should login with valid credentials', async () => {
@@ -66,13 +48,6 @@ describe('Login Functionality on practicesoftwaretesting.com', () => {
         const title = await MyAccountPage.title.isDisplayed();
         expect(title).to.be.true;
     })
-    // it('should login with invalid credentials', async () => {
-    //     await LoginPage.open();
-    //     await LoginPage.login('qwerty@gmail.com',
-    //         'qscgy-54321',)
-    //     const error =  await LoginPage.getErrorText()
-    //     await expect(error).toBe("Invalid email or password")
-    // })
 });
 describe('Product Details Functionality on practicesoftwaretesting.com', () => {
     it('should Product Details view', async () => {
@@ -98,7 +73,6 @@ describe('Adding To Cart Functionality on practicesoftwaretesting.com', () => {
         messageText.should.include('Product added to shopping cart.');
     })
 })
-
 describe('Adding To Favorite Functionality on practicesoftwaretesting.com', () => {
     it('should adding the product to favorites list', async () => {
         //     Given the user is on the product details page,
@@ -123,10 +97,12 @@ describe('Searching Functionality on practicesoftwaretesting.com', () => {
         await assert.isOk(combinationPliersTextIsDisplayed);
     })
 })
-describe('Filtering and Sorting Functionality By Price on practicesoftwaretesting.com', () => {
-    it('should the user Filtering and Sorting product', async () => {
-        //    Given the user is on the homepage.
+describe('Filtering and Sorting Functionality on practicesoftwaretesting.com', () => {
+    //    Given the user is on the homepage.
+    beforeEach(async () => {
         await DashboardPage.open();
+    })
+    it('should the user Filtering and Sorting product by price from high to low', async () => {
         //     When they sort the products from high to low price,
         await DashboardPage.getPriceSettings();
         //     Then the displayed products should be sorted by price in descending order.
@@ -134,11 +110,7 @@ describe('Filtering and Sorting Functionality By Price on practicesoftwaretestin
         const toolCabinetTextIsDisplayed = await DashboardPage.toolCabinet.isDisplayed();
         await assert.isOk(toolCabinetTextIsDisplayed);
     })
-})
-describe('Filtering and Sorting Functionality By Categories on practicesoftwaretesting.com', () => {
-    it('should the user Filtering and Sorting product', async () => {
-        //    Given the user is on the homepage.
-        await DashboardPage.open();
+    it('should the user Filtering products by a category', async () => {
         //     When they filter products by a category.
         await DashboardPage.filtersByCategory();
         //     Then the displayed products should match the selected category and sort order.
@@ -146,4 +118,3 @@ describe('Filtering and Sorting Functionality By Categories on practicesoftwaret
         await assert.include(allNames, "Hammer")
     })
 })
-

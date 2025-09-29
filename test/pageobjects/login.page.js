@@ -1,38 +1,31 @@
-const {$} = require('@wdio/globals')
-const {browser} = require('@wdio/globals')
-const loginPageURL = "https://practicesoftwaretesting.com/auth/login"
+const {$} = require('@wdio/globals');
+const BasePage = require('./base.page');
+class LoginPage extends BasePage{
 
-class LoginPage {
-
-    get inputEmil() {
-        return browser.$('input[data-test="email"]')
+    get inputEmail() {
+        return $('input[data-test="email"]')
     }
 
     get inputPassword() {
-        return browser.$('input[data-test="password"]')
+        return $('input[data-test="password"]')
     }
 
     get loginButton() {
-        return browser.$('input[data-test="login-submit"]')
-    }
-
-    get errorMessage() {
-        return browser.$('div[data-test="login-error"]')
+        return $('input[data-test="login-submit"]')
     }
 
     get title() {
-        return browser.$('div[class="col-lg-6 auth-form"]')
+        return $('div[class="col-lg-6 auth-form"]')
     }
 
     async open() {
-        await browser.url(loginPageURL);
+        return super.open('auth/login');
     }
 
-    async login(emil, password) {
-        await this.inputEmil.setValue(emil);
-        await this.inputPassword.setValue(password);
-        await this.loginButton.waitForClickable()
-        await this.loginButton.click();
+    async login(email, password) {
+        await this.setInputValue(this.inputEmail, email);
+        await this.setInputValue(this.inputPassword, password);
+        await this.clickElement(this.loginButton);
     }
 
 }

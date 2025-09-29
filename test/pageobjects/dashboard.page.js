@@ -1,34 +1,33 @@
-const {$} = require('@wdio/globals')
-const {browser} = require('@wdio/globals')
-const dashboardPageURL = "https://practicesoftwaretesting.com/";
-
-class DashboardPage {
+const {$,$$} = require('@wdio/globals');
+const {browser} = require('@wdio/globals');
+const BasePage = require('./base.page');
+class DashboardPage extends BasePage {
     get inputSearch() {
-        return browser.$('input[data-test="search-query"]')
+        return $('input[data-test="search-query"]')
     }
 
     get buttonSearch() {
-        return browser.$('button[data-test="search-submit"]')
+        return $('button[data-test="search-submit"]')
     }
 
     get priceSettings() {
-        return browser.$('select[data-test="sort"]')
+        return $('select[data-test="sort"]')
     }
 
     get priceHighToLow() {
-        return browser.$('option[value="price,desc"]')
+        return $('option[value="price,desc"]')
     }
 
     get combinationPliersText() {
-        return browser.$('h1[data-test="product-name"]')
+        return $('h1[data-test="product-name"]')
     }
 
     get hammerCheckbox() {
-        return browser.$('input[class="icheck"]')
+        return $('input[class="icheck"]')
     }
 
     get hammer() {
-        return browser.$$('h5[data-test="product-name"]')
+        return $$('h5[data-test="product-name"]')
     }
 
     get toolCabinet() {
@@ -36,19 +35,17 @@ class DashboardPage {
     }
 
     async open() {
-        await browser.url(dashboardPageURL);
+        return super.open('');
     }
 
     async searchForProduct(searchTerm) {
-        await this.inputSearch.setValue(searchTerm);
-        await this.buttonSearch.waitForClickable();
-        await this.buttonSearch.click();
+        await this.setInputValue(this.inputSearch, searchTerm);
+        await this.clickElement(this.buttonSearch);
     }
 
     async filtersByCategory() {
-        await this.hammerCheckbox.waitForDisplayed()
         await this.hammerCheckbox.scrollIntoView()
-        await this.hammerCheckbox.click()
+        await this.clickElement(this.hammerCheckbox)
     }
     async getAllFilteredProductNames() {
 
