@@ -16,7 +16,7 @@ export default defineConfig([
         ...globals.browser,
         ...globals.node,
         ...globals.mocha,
-        browser: "readonly",
+        browser: 'readonly',
       },
     },
   },
