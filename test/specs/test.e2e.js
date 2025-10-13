@@ -2,7 +2,6 @@ const LoginPage = require('../pageobjects/login.page');
 const RegisterPage = require('../pageobjects/register.page');
 const MyAccountPage = require('../pageobjects/myAccount.page');
 const DashboardPage = require('../pageobjects/dashboard.page');
-const BasePage = require('../pageobjects/base.page');
 const ProductPage = require('../pageobjects/product.page');
 const { products, users } = require('../data/testData');
 const { expect, should, assert } = require('chai');

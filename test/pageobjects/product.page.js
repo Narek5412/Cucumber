@@ -1,6 +1,5 @@
 const { $ } = require('@wdio/globals');
 const BasePage = require('./base.page');
-const DashboardPage = require('./dashboard.page');
 
 class ProductPage extends BasePage {
   get addToFavourites() {
