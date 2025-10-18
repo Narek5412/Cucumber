@@ -41,7 +41,7 @@ exports.config = {
   // and 30 processes will get spawned. The property handles how many capabilities
   // from the same test should run tests.
   //
-  maxInstances: 3,
+  maxInstances: 1,
   //
   // If you have trouble getting all important capabilities together, check out the
   // Sauce Labs platform configurator - a great tool to configure your capabilities:
@@ -52,21 +52,14 @@ exports.config = {
       browserName: 'chrome',
       acceptInsecureCerts: true,
       'goog:chromeOptions': {
-        // ensure Chromium in containers works reliably
         args: [
           '--headless=new',
           '--disable-gpu',
           '--no-sandbox',
           '--disable-dev-shm-usage',
         ],
-        // explicitly set binary for environments with Chromium only
-        binary: '/usr/bin/chromium-browser',
+        binary: '/usr/bin/google-chrome',
       },
-    },
-    {
-      browserName: 'firefox',
-      acceptInsecureCerts: true,
-      'moz:firefoxOptions': { args: ['-headless'] },
     },
   ],
 
@@ -117,26 +110,8 @@ exports.config = {
   // Services take over a specific job you don't want to take care of. They enhance
   // your test setup with almost no effort. Unlike plugins, they don't add new
   // commands. Instead, they hook themselves up into the test process.
-  services: [
-    [
-      'selenium-standalone',
-      {
-        logPath: 'logs',
-        installArgs: {
-          drivers: {
-            chrome: { version: 'latest' },
-            firefox: { version: 'latest' },
-          },
-        },
-        args: {
-          drivers: {
-            chrome: { version: 'latest' },
-            firefox: { version: 'latest' },
-          },
-        },
-      },
-    ],
-  ],
+  autoXvfb: false,
+  services: [],
   //
   // Framework you want to run your specs with.
   // The following are supported: Mocha, Jasmine, and Cucumber
