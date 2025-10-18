@@ -19,11 +19,11 @@ class DashboardPage extends BasePage {
     return $('option[value="price,desc"]');
   }
 
-  get hammerCheckbox() {
-    return $('input[class="icheck"]');
+  get ecoFriendlyProductsCheckbox() {
+    return $('input[data-test="eco-friendly-filter"]');
   }
 
-  get hammer() {
+  get  safetyGoggles () {
     return $$('h5[data-test="product-name"]');
   }
 
@@ -49,16 +49,16 @@ class DashboardPage extends BasePage {
   }
 
   async filtersByCategory() {
-    await this.hammerCheckbox.scrollIntoView();
-    await this.clickElement(this.hammerCheckbox);
+    await this.ecoFriendlyProductsCheckbox.scrollIntoView();
+    await this.clickElement(this.ecoFriendlyProductsCheckbox);
   }
 
   async getAllFilteredProductNames() {
-    await browser.waitUntil(async () => (await this.hammer).length > 0, {
+    await browser.waitUntil(async () => (await this.safetyGoggles).length > 0, {
       timeout: 10000,
       timeoutMsg: 'Expected filtered products to be displayed but none found',
     });
-    const productElements = await this.hammer;
+    const productElements = await this.safetyGoggles;
     const productWithNames = [];
     for (const item of productElements) {
       productWithNames.push((await item.getText()).trim());

@@ -20,7 +20,7 @@ exports.config = {
   // The path of the spec files will be resolved relative from the directory of
   // of the config file unless it's absolute.
   //
-  specs: ['./test/specs/**/*.js'],
+  specs: ['./features/**/*.feature'],
   // Patterns to exclude.
   exclude: [
     // 'path/to/excluded/files'
@@ -118,7 +118,7 @@ exports.config = {
   //
   // Make sure you have the wdio adapter package for the specific framework installed
   // before running any tests.
-  framework: 'mocha',
+  framework: 'cucumber',
 
   //
   // The number of times to retry the entire specfile when it fails as a whole
@@ -156,6 +156,11 @@ exports.config = {
     timeout: 60000,
   },
 
+  cucumberOpts: {
+    tagExpression: 'not @skip',
+    require: ['./features/test/specs/**/*.js'],
+    timeout: 90000,
+  },
   //
   // =====
   // Hooks
