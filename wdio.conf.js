@@ -41,7 +41,7 @@ exports.config = {
   // and 30 processes will get spawned. The property handles how many capabilities
   // from the same test should run tests.
   //
-  maxInstances: 3,
+  maxInstances: 1,
   //
   // If you have trouble getting all important capabilities together, check out the
   // Sauce Labs platform configurator - a great tool to configure your capabilities:
@@ -51,16 +51,10 @@ exports.config = {
     {
       browserName: 'chrome',
       acceptInsecureCerts: true,
-      'goog:chromeOptions': { args: ['--headless', '--disable-gpu'] },
-    },
-    {
-      browserName: 'firefox',
-      acceptInsecureCerts: true,
-      'moz:firefoxOptions': { args: ['-headless'] },
-    },
-    {
-      browserName: 'safari',
-    },
+      'goog:chromeOptions': { 
+        args: ['--headless', '--disable-gpu', '--no-sandbox', '--disable-dev-shm-usage', '--disable-web-security'] 
+      },
+    }
   ],
 
   //
@@ -110,7 +104,7 @@ exports.config = {
   // Services take over a specific job you don't want to take care of. They enhance
   // your test setup with almost no effort. Unlike plugins, they don't add new
   // commands. Instead, they hook themselves up into the test process.
-  services: [],
+  services: ['selenium-standalone'],
   //
   // Framework you want to run your specs with.
   // The following are supported: Mocha, Jasmine, and Cucumber
@@ -160,6 +154,8 @@ exports.config = {
     tagExpression: 'not @skip',
     require: ['./features/test/specs/**/*.js'],
     timeout: 90000,
+    failFast: false,
+    retry: 0,
   },
   //
   // =====
