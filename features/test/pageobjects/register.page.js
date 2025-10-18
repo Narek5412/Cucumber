@@ -55,7 +55,7 @@ class RegisterPage extends BasePage {
     await this.setInputValue(this.inputPhone, user.phone);
     await this.setInputValue(this.inputEmail, user.email);
     await this.setInputValue(this.inputPassword, user.password);
-    await this.registerButton.waitForClickable()
+    await this.registerButton.waitForClickable();
     await this.clickElement(this.registerButton);
   }
   async selectCountry(countryCode) {
