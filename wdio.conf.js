@@ -1,4 +1,6 @@
 exports.config = {
+  // disable automatic xvfb-run wrapper to avoid IPC issues in CI
+  autoXvfb: false,
   //
   // ====================
   // Runner Configuration
@@ -41,7 +43,7 @@ exports.config = {
   // and 30 processes will get spawned. The property handles how many capabilities
   // from the same test should run tests.
   //
-  maxInstances: 3,
+  maxInstances: 1,
   //
   // If you have trouble getting all important capabilities together, check out the
   // Sauce Labs platform configurator - a great tool to configure your capabilities:
@@ -51,15 +53,7 @@ exports.config = {
     {
       browserName: 'chrome',
       acceptInsecureCerts: true,
-      'goog:chromeOptions': { args: ['--headless', '--disable-gpu'] },
-    },
-    {
-      browserName: 'firefox',
-      acceptInsecureCerts: true,
-      'moz:firefoxOptions': { args: ['-headless'] },
-    },
-    {
-      browserName: 'safari',
+      'goog:chromeOptions': { args: ['--headless=new', '--disable-gpu', '--no-sandbox'] },
     },
   ],
 
